@@ -39,7 +39,8 @@ const App: React.FC = () => {
       setRecipeData(result);
     } catch (e) {
       console.error(e);
-      setError(e instanceof Error ? e.message : 'An unexpected error occurred. Please try again.');
+      const errorMessage = e instanceof Error ? e.message : 'An unexpected error occurred. Please try again.';
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -57,7 +58,7 @@ const App: React.FC = () => {
             {isLoading && <LoadingSpinner />}
             {error && (
               <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md" role="alert">
-                <p className="font-bold">Error</p>
+                <p className="font-bold">Ошибка</p>
                 <p>{error}</p>
               </div>
             )}

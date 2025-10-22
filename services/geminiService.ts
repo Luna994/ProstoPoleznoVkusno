@@ -1,11 +1,14 @@
+
 import { GoogleGenAI, Type, Part } from "@google/genai";
 import type { RecipeData, ImagePart } from '../types';
 
-if (!process.env.API_KEY) {
+const API_KEY = process.env.API_KEY;
+
+if (!API_KEY) {
     throw new Error("API_KEY environment variable is not set");
 }
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = new GoogleGenAI({ apiKey: API_KEY });
 
 const recipeSchema = {
     type: Type.OBJECT,
@@ -67,7 +70,6 @@ export async function generateRecipePost(text: string, image: ImagePart | null):
         });
         
         const jsonString = response.text.trim();
-        // A simple check to handle cases where the model might still return the old structure
         const parsedJson = JSON.parse(jsonString);
         if (parsedJson.nutrition && typeof parsedJson.nutrition === 'object') {
             parsedJson.nutritionInfo = `Калорийность - ${parsedJson.nutrition.calories}, Б - ${parsedJson.nutrition.protein}, Ж - ${parsedJson.nutrition.fat}, У - ${parsedJson.nutrition.carbs}`;
@@ -78,6 +80,9 @@ export async function generateRecipePost(text: string, image: ImagePart | null):
 
     } catch (error) {
         console.error("Error calling Gemini API:", error);
-        throw new Error("Failed to generate recipe. The model might be unable to process this input.");
+        if (error instanceof Error && (error.message.includes('API key not valid') || error.message.includes('API_KEY_INVALID'))) {
+             throw new Error("Неверный API ключ. Пожалуйста, проверьте ключ в настройках Netlify.");
+        }
+        throw new Error("Не удалось сгенерировать рецепт. Возможно, модель не может обработать эти данные или API ключ недействителен.");
     }
 }
