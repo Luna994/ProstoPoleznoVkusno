@@ -2,6 +2,9 @@
   "name": "recipe-generator-netlify-functions",
   "version": "1.0.0",
   "description": "Dependencies for Netlify serverless functions.",
+  "scripts": {
+    "build": "echo \"Frontend has no build step; Netlify builds functions automatically.\""
+  },
   "dependencies": {
     "@google/genai": "^1.26.0"
   }
