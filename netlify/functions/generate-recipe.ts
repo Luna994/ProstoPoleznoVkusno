@@ -89,11 +89,6 @@ const handler: Handler = async (event: HandlerEvent) => {
     const jsonString = response.text.trim();
     const parsedJson = JSON.parse(jsonString);
 
-    if (parsedJson.nutrition && typeof parsedJson.nutrition === 'object') {
-        parsedJson.nutritionInfo = `Калорийность - ${parsedJson.nutrition.calories}, Б - ${parsedJson.nutrition.protein}, Ж - ${parsedJson.nutrition.fat}, У - ${parsedJson.nutrition.carbs}`;
-        delete parsedJson.nutrition;
-    }
-
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
