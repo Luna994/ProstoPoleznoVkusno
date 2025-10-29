@@ -30,8 +30,8 @@ const recipeSchema = {
             description: 'Рассчитанный КБЖУ на одну порцию в виде одной строки. Например: "Калорийность - 400 ккал, Б - 30 г, Ж - 20 г, У - 30 г".' 
         },
         tip: { type: Type.STRING, description: 'Короткий полезный совет или лайфхак по приготовлению.' },
-        dietInfo: { type: Type.STRING, description: 'Номера диет и/или медицинские показания, к которым относится рецепт (например, "Диеты №5, 8, 9 — при заболеваниях печени и ЖКТ, диабете, для щадящего рациона").' },
-        imagePrompt: { type: Type.STRING, description: 'Промпт для генерации фото-реалистичного изображения готового блюда. Должен быть на английском языке.' },
+        dietInfo: { type: Type.STRING, description: 'Номера диет и/или медицинские показания, к которым относится рецепт (например, "Диета №5, гастрит").' },
+        imagePrompt: { type: Type.STRING, description: 'Промпт для генерации фото-реалистичного изображения готового блюда. Должен быть на английском языке и включать текст (заголовок рецепта) на русском языке' },
         hashtags: {
             type: Type.ARRAY,
             items: { type: Type.STRING },
@@ -42,7 +42,7 @@ const recipeSchema = {
 };
 
 const systemInstruction = `You are an expert culinary AI specializing in adapting professional dietary recipes for home cooking. Your task is to analyze the user's recipe (from text or image) and convert it into a structured Instagram post format. You must strictly adhere to the provided JSON schema for your output. The tone should be warm, encouraging, and clear for a home cook. Calculate nutritional values based on standard food data for the adapted ingredient quantities.`;
-const promptTemplate = `Пожалуйста, проанализируй следующий рецепт из общепита. Адаптируй его для домашнего приготовления на 2-4 порции и создай пост для Instagram в формате JSON. Пост должен содержать: номер рецепта, заголовок, список ингредиентов, 3-4 шага приготовления, КБЖУ на 1 порцию в виде одной строки, полезный совет, информацию о диете и медицинских показаниях, промпт для генерации визуала (на английском) и хэштеги, включая #ВкусноПростоПолезно и #Диета№N.`;
+const promptTemplate = `Пожалуйста, проанализируй следующий рецепт из общепита. Адаптируй его для домашнего приготовления на 2-4 порции и создай пост для Instagram в формате JSON. Пост должен содержать: номер рецепта, заголовок, список ингредиентов, 3-4 шага приготовления, КБЖУ на 1 порцию в виде одной строки, полезный совет, информацию о диете/показаниях, промпт для генерации визуала (на английском) и хэштеги, включая #ВкусноПростоПолезно и #Диета№N.`;
 
 
 const handler: Handler = async (event: HandlerEvent) => {
